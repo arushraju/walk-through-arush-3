@@ -601,7 +601,8 @@ async function loadAndInstance(refMesh, jsonPath) {
 	        console.error("Missing reference mesh:", jsonPath);
 	        return;
 	    }
-        const response = await fetch(jsonPath);
+        const response = await fetch(jsonPath, { cache: "no-store" });
+
 
         if (!response.ok) {
             throw new Error(

@@ -597,6 +597,10 @@ loader.load('./My_World_Collision.glb', (gltf) => {
 
 async function loadAndInstance(refMesh, jsonPath) {
     try {
+		if (!refMesh) {
+	        console.error("Missing reference mesh:", jsonPath);
+	        return;
+	    }
         const response = await fetch(jsonPath);
 
         if (!response.ok) {

@@ -594,14 +594,32 @@ loader.load('./My_World_Collision.glb', (gltf) => {
     worldOctree.fromGraphNode(gltf.scene);  // ONLY collision
 });
 
+
 async function loadAndInstance(refMesh, jsonPath) {
     try {
-        const transforms = await fetch(jsonPath).then(r => r.json());
+        const response = await fetch(jsonPath);
+
+        if (!response.ok) {
+            throw new Error(
+                `Fetch failed: ${response.status} ${response.statusText}`
+            );
+        }
+
+        const transforms = await response.json();
+
+        if (!refMesh) {
+            throw new Error("Reference mesh is null or undefined");
+        }
+
         createInstances(refMesh, transforms);
+
     } catch (e) {
-        console.error(`JSON load failed: ${jsonPath}`);
+        console.error("JSON load failed");
+        console.error("Path:", jsonPath);
+        console.error("Error:", e);
     }
 }
+
 
 function createInstances(refMesh, transforms) {
 
